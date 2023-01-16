@@ -53,6 +53,23 @@ app.delete("/todos/:id", async (req, res) =>{
     }
 })
 
+
+// update a todo 
+app.put("/todos/:id", async (req, res) => {
+    try {
+        const {id} = req.params
+        const {description} = req.body
+        const updateTodo = await pool.query(
+            "UPDATE todos SET description = $1 WHERE todo_id = $2",
+            [description, id]
+        )
+        res.json("todo updated")
+    } catch (error) {
+        console.error(error.message)  
+    }
+})
+
+
 app.listen(port, ()=>{
     console.log(`listening on PORT ${port}`);
 })

@@ -39,6 +39,19 @@ app.post('/todos', async(req,res)=>{
     }
 })
 
+// delete a todo
+app.delete("/todos/:id", async (req, res) =>{
+    try {
+        const {id} = req.params
+        const deleteTodo = await pool.query(
+            "DELETE FROM todos WHERE todo_id = $1",
+            [id]
+        )
+        res.json("todo deleted")
+    } catch (error) {
+        console.error(error.message)  
+    }
+})
 
 app.listen(port, ()=>{
     console.log(`listening on PORT ${port}`);

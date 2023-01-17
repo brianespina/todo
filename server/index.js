@@ -28,10 +28,10 @@ app.get('/todos', async (req, res) => {
 // create a todo
 app.post('/todos', async(req,res)=>{
     try {
-        const {description} = req.body
+        const {description, status} = req.body
         const newTodo = await pool.query(
-            "INSERT INTO todos (description) VALUES($1) RETURNING *", 
-            [description]
+            "INSERT INTO todos (description, status) VALUES($1, $2) RETURNING *", 
+            [description, status]
         )
         res.json(newTodo.rows[0])
     } catch (err) {
@@ -58,10 +58,10 @@ app.delete("/todos/:id", async (req, res) =>{
 app.put("/todos/:id", async (req, res) => {
     try {
         const {id} = req.params
-        const {description} = req.body
+        const {description, status} = req.body
         const updateTodo = await pool.query(
-            "UPDATE todos SET description = $1 WHERE todo_id = $2",
-            [description, id]
+            "UPDATE todos SET description = $1, status = $2 WHERE todo_id = $3",
+            [description, status, id]
         )
         res.json("todo updated")
     } catch (error) {
